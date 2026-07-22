@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Check if we're on main branch
+branch=$(git symbolic-ref --short HEAD 2>/dev/null || echo "")
+if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
+  echo "❌ Cannot commit directly to $branch. Please create a feature branch."
+  echo "   git checkout -b feature/your-feature-name"
+  exit 1
+fi
+
+# Type check
+npx tsc --noEmit
+
+# Lint and format staged files
+npx lint-staged
